@@ -59,6 +59,7 @@ El profesor propuso usar Hermes Agent para que la demo muestre un agente real to
 - [Integración de Hermes y controles externos](docs/HERMES.md)
 - [Referencias verificadas](docs/REFERENCIAS.md)
 - [Avance y límites de esta entrega](docs/ESTADO.md)
+- [Propuesta y avance anteriores](docs/antecedentes/): documentos históricos previos a la retroalimentación sobre Hermes. El estado técnico vigente es el de este README y `docs/ESTADO.md`.
 
 ## Alcance seguro
 
