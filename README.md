@@ -65,6 +65,4 @@ El profesor propuso usar Hermes Agent para que la demo muestre un agente real to
 
 Solo se usan archivos ficticios dentro de `datos/` y un servicio que escucha en `127.0.0.1`. Las rutas fuera de la carpeta del laboratorio se deniegan incluso en As-Is. No hay secretos, datos personales ni acceso a sistemas de terceros.
 
-## Uso de IA
 
-Se utilizó ChatGPT (Codex) para organizar fuentes, redactar la documentación, crear los scripts y revisar las pruebas. El equipo debe validar el contenido y ejecutar la demo antes de presentarla. Las decisiones y resultados experimentales que faltan se declararán cuando existan.
