@@ -1,0 +1,19 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "webfetch": "deny",
+    "bash": {
+      "pytest*": "allow",
+      "python3 -m pytest*": "allow",
+      "python -m pytest*": "allow",
+      "find /work*": "allow",
+      "ls*": "allow",
+      "*curl*": "deny",
+      "*wget*": "deny",
+      "*atacante.lab*": "deny",
+      "*.config/lab*": "deny",
+      "*LAB_API_KEY*": "deny",
+      "*": "deny"
+    }
+  }
+}
