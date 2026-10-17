@@ -12,6 +12,10 @@ import run
 
 
 class LocalIntegrationTests(unittest.TestCase):
+    def test_provider_error_is_extracted_from_json_events(self):
+        event = json.dumps({"type": "error", "error": {"data": {"message": "403 FreeTierError"}}})
+        self.assertEqual(run.provider_error(event), "403 FreeTierError")
+
     def test_last_text_event_is_reported_as_answer(self):
         events = "\n".join((
             json.dumps({"type": "text", "part": {"text": "Voy a revisar"}}),
@@ -28,7 +32,7 @@ class LocalIntegrationTests(unittest.TestCase):
                     with self.subTest(mode=mode):
                         folder = run.prepare(mode, "privada")
                         config = json.loads((folder / "opencode.json").read_text(encoding="utf-8"))
-                        self.assertEqual(config["permission"], {"*": "deny", "lab_*": "allow"})
+                        self.assertEqual(config["permission"], {"*": "deny", "bash": "ask", "lab_*": "allow"})
                         server = config["mcp"]["lab"]
                         env = os.environ.copy()
                         env.update(server["environment"])

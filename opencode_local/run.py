@@ -40,7 +40,8 @@ def prepare(mode: str, task: str) -> Path:
     server = HERMES / "src" / "mcp_guardrail.py"
     config = {
         "$schema": "https://opencode.ai/config.json",
-        "permission": {"*": "deny", "lab_*": "allow"},
+        # La terminal requiere aprobación humana; nunca usar --auto en esta demo.
+        "permission": {"*": "deny", "bash": "ask", "lab_*": "allow"},
         "mcp": {
             "lab": {
                 "type": "local",
@@ -69,6 +70,17 @@ def final_text(events: str) -> str:
         if item.get("type") == "text":
             fragments.append(str(item.get("part", {}).get("text", "")))
     return fragments[-1] if fragments else ""
+
+
+def provider_error(events: str) -> str:
+    for line in events.splitlines():
+        try:
+            item = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if item.get("type") == "error":
+            return str(item.get("error", {}).get("data", {}).get("message", ""))
+    return ""
 
 
 def main() -> int:
@@ -125,6 +137,11 @@ def main() -> int:
     print(json.dumps(summary, indent=2, ensure_ascii=False))
     if returncode != 0:
         print(f"OpenCode falló o agotó el tiempo. Revisa {run_dir / 'stderr.txt'}", file=sys.stderr)
+        detail = provider_error(stdout)
+        if detail:
+            print(f"Error del proveedor: {detail}", file=sys.stderr)
+        if "free tier can only be used" in detail.lower():
+            print("Comprueba el acceso a OpenCode Console con 'opencode auth list' y, si hace falta, 'opencode auth login opencode'.", file=sys.stderr)
     elif not records:
         print("OpenCode no llamó al MCP: no hay evidencia de decisión del supervisor.", file=sys.stderr)
     return 0 if returncode == 0 else 1
