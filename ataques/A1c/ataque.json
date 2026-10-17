@@ -1,0 +1,1 @@
+{"nombre": "Exfiltracion via codigo malicioso del proyecto (conftest.py se ejecuta al correr pytest)", "patrones_intento": ["pytest"]}
