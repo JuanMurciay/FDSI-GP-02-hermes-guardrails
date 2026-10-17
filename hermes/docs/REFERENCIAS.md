@@ -23,3 +23,5 @@ Consulta inicial realizada el 26 de septiembre de 2026 y actualización de Herme
 [10] Nous Research. *MCP (Model Context Protocol) en Hermes*. https://hermes-agent.nousresearch.com/docs/user-guide/features/mcp
 
 [11] Nous Research. *Toolsets Reference*. https://hermes-agent.nousresearch.com/docs/reference/toolsets-reference
+
+[12] Docker Docs. *Docker Desktop WSL 2 backend on Windows*. https://docs.docker.com/desktop/features/wsl/

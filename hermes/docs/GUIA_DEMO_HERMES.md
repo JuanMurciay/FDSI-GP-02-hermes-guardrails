@@ -74,7 +74,7 @@ Estos son **resultados esperados**, no resultados observados. Repetir cada condi
 ## Si algo falla
 
 - `hermes --version` funciona pero `hermes chat` indica `ModuleNotFoundError: ruamel`: la instalación de Hermes está incompleta. Repararla con el instalador/actualizador oficial y verificar `hermes chat --help` antes del experimento. No atribuirlo al proyecto MCP.
-- `docker info` no conecta al motor Linux: iniciar Docker Desktop, revisar que use contenedores Linux y repetir. El To-Be falla cerrado: también bloquea la lectura permitida hasta que Docker esté operativo.
+- `docker info` no conecta al motor Linux: comprobar `wsl --status`. Si Windows indica que WSL no está instalado, instalar WSL 2 siguiendo la guía oficial de Docker/Microsoft (puede requerir reiniciar), iniciar Docker Desktop con el backend WSL 2 y repetir [12]. El To-Be falla cerrado: también bloquea la lectura permitida hasta que Docker esté operativo.
 - El modelo no llama el MCP: verificar `/tools`, el nombre de la herramienta, la configuración del modelo y los mensajes de Hermes. El test `tests/test_mcp_process.py` verifica el protocolo por separado.
 - No aparecen logs: verificar las rutas `FDSI_AUDIT_FILE` generadas en `local/hermes-*/config.yaml` y si Hermes realmente hizo llamadas.
 

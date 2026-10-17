@@ -10,7 +10,7 @@ Comparamos un laboratorio **As-Is** de permisos amplios con un **To-Be** que com
 
 ## Estado real
 
-El código, la integración MCP, los perfiles de Hermes, las sondas de Docker y la documentación están preparados. **Todavía no hay una corrida completa con Hermes y Docker en este portátil:** `hermes chat` falla por una dependencia faltante (`ruamel`) y el motor Linux de Docker Desktop no responde. Pasan 13 pruebas de Python, incluido un intercambio MCP real por `stdio`; esto no sustituye una prueba con el modelo. Véase [estado y pendientes](docs/ESTADO.md).
+El código, la integración MCP, los perfiles de Hermes, las sondas de Docker y la documentación están preparados. **Todavía no hay una corrida completa con Hermes y Docker en este portátil:** `hermes chat` falla por una dependencia faltante (`ruamel`) y el motor Linux de Docker Desktop no responde; `wsl --status` confirma que WSL aún no está instalado. Pasan 13 pruebas de Python, incluido un intercambio MCP real por `stdio`; esto no sustituye una prueba con el modelo. Véase [estado y pendientes](docs/ESTADO.md).
 
 ## Ejecutar lo que ya funciona
 

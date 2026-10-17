@@ -15,7 +15,7 @@
 ## Aún sin comprobar en una ejecución completa
 
 - La instalación local de Hermes anuncia versión `v0.21.5+2504.ga0fe806`, pero `hermes chat --help` termina con `ModuleNotFoundError: ruamel`. Hay que reparar la instalación antes de conectarlo al MCP.
-- Docker Desktop está instalado, pero `docker info` no conecta al motor Linux. Las sondas de contenedor y la lectura To-Be con Docker no se han podido ejecutar aquí.
+- Docker Desktop está instalado, pero `docker info` no conecta al motor Linux. Además, `wsl --status` indica que WSL no está instalado en este Windows. Las sondas de contenedor y la lectura To-Be con Docker no se han podido ejecutar aquí; habrá que habilitar WSL 2 y arrancar Docker Desktop, o usar otro equipo con motor Linux operativo [12].
 - No se ha verificado la lista de herramientas que Hermes muestra en `/tools` con estos perfiles. Si aparece una vía alternativa, la prueba no cumple el modelo de amenazas.
 - No hay resultados medidos de llamadas de Hermes, repeticiones, latencias, éxito de tarea legítima ni inyección de prompt. Las tablas de la guía contienen expectativas, no resultados.
 
