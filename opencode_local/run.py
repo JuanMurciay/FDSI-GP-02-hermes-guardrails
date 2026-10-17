@@ -141,7 +141,7 @@ def main() -> int:
         if detail:
             print(f"Error del proveedor: {detail}", file=sys.stderr)
         if "free tier can only be used" in detail.lower():
-            print("Comprueba el acceso a OpenCode Console con 'opencode auth list' y, si hace falta, 'opencode auth login opencode'.", file=sys.stderr)
+            print("Comprueba el acceso con 'opencode auth list' y, si hace falta, ejecuta 'opencode auth login' sin argumentos para elegir el proveedor.", file=sys.stderr)
     elif not records:
         print("OpenCode no llamó al MCP: no hay evidencia de decisión del supervisor.", file=sys.stderr)
     return 0 if returncode == 0 else 1
