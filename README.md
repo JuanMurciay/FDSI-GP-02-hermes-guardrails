@@ -16,6 +16,7 @@ resultados en `resultados/RESULTADOS_30PCT.md`.
 - `ataques/`: variantes de la inyección de instrucciones (A1, A1b, A1c).
 - `orquestador/run.py`: corre un nivel (N0/N1/N2/N3) + ataque (+ `--broker` opcional) y mide intento/impacto.
 - `resultados/`: registros por corrida (`runs/`) y `corridas.csv`.
+- [Anexo Hermes](hermes/README.md): supervisor MCP y sondas de aislamiento Docker. Sus resultados aún no se han medido; no se mezclan con las corridas de OpenCode.
 
 ## Ejecutar una corrida
 
