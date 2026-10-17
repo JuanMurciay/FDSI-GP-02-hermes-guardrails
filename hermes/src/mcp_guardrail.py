@@ -19,7 +19,7 @@ if MODE not in {"as-is", "to-be"}:
 SUPERVISOR = Supervisor(
     Path(os.environ.get("FDSI_DATA_DIR", str(ROOT / "datos"))),
     Path(os.environ.get("FDSI_AUDIT_FILE", str(ROOT / "evidencias" / "mcp.jsonl"))),
-    docker_secure=(MODE == "to-be"),
+    docker_secure=(MODE == "to-be" and os.environ.get("FDSI_DOCKER_SECURE", "1") == "1"),
 )
 TOOLS = [
     {

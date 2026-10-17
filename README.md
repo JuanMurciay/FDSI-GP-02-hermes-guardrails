@@ -17,6 +17,18 @@ resultados en `resultados/RESULTADOS_30PCT.md`.
 - `orquestador/run.py`: corre un nivel (N0/N1/N2/N3) + ataque (+ `--broker` opcional) y mide intento/impacto.
 - `resultados/`: registros por corrida (`runs/`) y `corridas.csv`.
 - [Anexo Hermes](hermes/README.md): supervisor MCP y sondas de aislamiento Docker. Sus resultados aún no se han medido; no se mezclan con las corridas de OpenCode.
+- [Demo local con OpenCode](opencode_local/README.md): comparación As-Is/To-Be mediante MCP y guardrail externo, ejecutable sin WSL ni Docker; la limitación de recursos queda para la fase con contenedores.
+
+## Demo recomendada en Windows sin Docker
+
+```powershell
+python opencode_local/run.py --modo as-is --tarea privada
+python opencode_local/run.py --modo to-be --tarea privada
+python opencode_local/run.py --modo as-is --tarea ticket
+python opencode_local/run.py --modo to-be --tarea ticket
+```
+
+Lee la [guía](opencode_local/README.md) antes de interpretar los registros. Las pruebas `N0`–`N3` de abajo requieren WSL/Docker y sirven para evaluar aislamiento del sistema operativo.
 
 ## Ejecutar una corrida
 
