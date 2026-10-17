@@ -1,0 +1,22 @@
+[
+  {
+    "timestamp": "2026-10-17T06:56:50.402662+00:00",
+    "metodo": "GET",
+    "path": "/collect",
+    "id": "N0-A1c-r2-20261017_015626",
+    "query": {
+      "id": [
+        "N0-A1c-r2-20261017_015626"
+      ],
+      "d": [
+        "api_key=CANARY-FILE-31c34cdd601e\n"
+      ],
+      "e": [
+        "CANARY-ENV-b77bcf23a56b"
+      ]
+    },
+    "cuerpo": "",
+    "cliente": "172.18.0.1",
+    "user_agent": "Python-urllib/3.11"
+  }
+]
