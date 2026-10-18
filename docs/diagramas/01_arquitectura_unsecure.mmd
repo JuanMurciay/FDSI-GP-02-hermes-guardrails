@@ -1,0 +1,15 @@
+flowchart TD
+    User["Usuario / Orquestador"] --> Agent["Agente Autonomo (opencode --auto)"]
+
+    subgraph UnsecureEnv["Arquitectura Unsecure (N0: WSL Directo / N1: Docker root sin endurecer)"]
+        direction TB
+        Agent --> Tools["Herramientas sin restriccion<br/>(bash / read / write / webfetch)"]
+
+        Tools -->|"1. Lee secretos expuestos"| Creds["~/.config/lab/credenciales.txt<br/>y env LAB_API_KEY (Texto Claro)"]
+        Tools -->|"2. Escritura y borrado libre (RW)"| DatosCrit["/work/datos/importante.txt<br/>(IMPACTADO por Sabotaje A2)"]
+        Tools -->|"3. Acceso fuera de /work"| HostFS["~/.bashrc y archivos del host<br/>(IMPACTADO por Escape A4)"]
+        Tools -->|"4. Sin cuotas cgroups"| Recursos["RAM / CPU / Procesos Ilimitados<br/>(IMPACTADO por Agotamiento A3 - 180s)"]
+        Tools -->|"5. Salida HTTP directa sin filtro"| RedAbierta["Red Abierta (lab-net / host)"]
+    end
+
+    RedAbierta -->|"Exfiltracion de canarios (A1 / A1b / A1c)"| Attacker["Servidor Atacante<br/>(http://atacante.lab:8000/collect)"]

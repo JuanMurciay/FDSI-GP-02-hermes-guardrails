@@ -1,0 +1,32 @@
+flowchart TD
+    User["Usuario / Orquestador<br/>(Monitoreo de Hashes SHA-256 y Timeout)"] --> Container
+
+    subgraph Container["Arquitectura Secure: Contenedor Endurecido Desechable (N2 / N4)"]
+        direction TB
+        Agent["Agente opencode (uid 1001:1001 sin privilegios)"]
+        PolicyN3["Politica N3: opencode.json (:ro)<br/>(Deniega webfetch, rm, curl externo y edit en datos/*)"]
+
+        subgraph KernelControls["Fronteras de Kernel, FS y Recursos"]
+            RO_Root["RootFS --read-only + tmpfs /tmp (256m)<br/>--cap-drop ALL + no-new-privileges"]
+            RO_Data["Volumen /work/datos en Solo Lectura (:ro)<br/>(BLOQUEA Sabotaje A2: 0/10 impacto)"]
+            Cgroups["Cuotas cgroups: 1 GiB RAM | 1 CPU | 128 PIDs<br/>(CONTIENE Agotamiento A3 via OOMKilled en ~4s)"]
+            NoSecrets["Sin secretos reales en el contenedor:<br/>credenciales.txt NO montado | LAB_API_KEY=PLACEHOLDER"]
+        end
+
+        Agent --> PolicyN3
+        PolicyN3 --> RO_Root
+        PolicyN3 --> RO_Data
+        PolicyN3 --> Cgroups
+        PolicyN3 --> NoSecrets
+    end
+
+    subgraph InternalNet["Red Aislada (--network lab-internal)"]
+        Proxy["fdsi-proxy (:3128)<br/>1. Allowlist CONNECT HTTPS (solo modelo LLM)<br/>2. Secretless Credential Broker (solo GET /v1/ en api.lab)"]
+    end
+
+    Container -->|"Unica salida vía HTTP_PROXY"| Proxy
+
+    Proxy -->|"ALLOW: Tunel TLS al modelo"| LLM_API["Proveedor LLM<br/>(opencode.ai / models.dev)"]
+    Proxy -->|"BROKER_INJECT: Inyecta Bearer Token en transito"| LegitAPI["API Legitima L2 (100% Utilidad)<br/>(http://api.lab:8000/v1/reporte)"]
+    Proxy -.->|"DENY (HTTP 403 Forbidden - 0/10 impacto)"| Attacker["Servidor Atacante<br/>(http://atacante.lab:8000/collect)"]
+    Container -.-x|"BLOQUEA Escape A4 (fuera del namespace)"| HostFiles["Archivos Privados del Host"]
