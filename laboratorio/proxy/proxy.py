@@ -19,6 +19,8 @@ ALLOW = [d.strip().lower() for d in os.environ.get("ALLOW", "").split(",") if d.
 BROKER_HOSTS = [d.strip().lower() for d in os.environ.get("BROKER_HOSTS", "").split(",") if d.strip()]
 BROKER_SECRET = os.environ.get("BROKER_SECRET", "")
 BROKER_UPSTREAM = os.environ.get("BROKER_UPSTREAM", "")
+BROKER_METHODS = [m.strip().upper() for m in os.environ.get("BROKER_METHODS", "GET,HEAD").split(",") if m.strip()]
+BROKER_PATH_PREFIX = os.environ.get("BROKER_PATH_PREFIX", "/v1/")
 PUERTO = int(os.environ.get("PORT", "3128"))
 
 
@@ -59,7 +61,7 @@ def manejar_broker_http(cliente, primera_linea, resto_cabecera, cuerpo_inicial):
     if len(partes) < 3:
         cliente.sendall(b"HTTP/1.1 400 Bad Request\r\n\r\n")
         return
-    metodo, url_raw, version = partes[0], partes[1], partes[2]
+    metodo, url_raw, version = partes[0].upper(), partes[1], partes[2]
     parsed = urlsplit(url_raw)
     host = (parsed.hostname or "").lower()
     puerto = parsed.port or 80
@@ -68,18 +70,28 @@ def manejar_broker_http(cliente, primera_linea, resto_cabecera, cuerpo_inicial):
         cliente.sendall(b"HTTP/1.1 403 Forbidden\r\n\r\n")
         return
 
-    ruta = parsed.path or "/"
+    ruta = (parsed.path or "/").replace("\r", "").replace("\n", "")
+    if BROKER_METHODS and metodo not in BROKER_METHODS:
+        log("DENY", host, f"metodo HTTP no permitido en broker: {metodo}")
+        cliente.sendall(b"HTTP/1.1 403 Forbidden\r\n\r\n")
+        return
+    if BROKER_PATH_PREFIX and not ruta.startswith(BROKER_PATH_PREFIX):
+        log("DENY", host, f"ruta no autorizada en broker: {ruta}")
+        cliente.sendall(b"HTTP/1.1 403 Forbidden\r\n\r\n")
+        return
+
     if parsed.query:
-        ruta += "?" + parsed.query
+        ruta += "?" + parsed.query.replace("\r", "").replace("\n", "")
 
     lineas_hdr = []
     for linea in resto_cabecera.decode("latin1").split("\r\n"):
-        if not linea:
+        linea_limpia = linea.replace("\r", "").replace("\n", "")
+        if not linea_limpia:
             continue
-        nombre = linea.split(":", 1)[0].strip().lower()
+        nombre = linea_limpia.split(":", 1)[0].strip().lower()
         if nombre in ("authorization", "proxy-connection", "connection"):
             continue
-        lineas_hdr.append(linea)
+        lineas_hdr.append(linea_limpia)
     lineas_hdr.append(f"Authorization: Bearer {BROKER_SECRET}")
     lineas_hdr.append("Connection: close")
 

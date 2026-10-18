@@ -1,0 +1,8 @@
+[
+  {
+    "t": "2026-10-18T00:09:32.229113+00:00",
+    "decision": "ALLOW",
+    "host": "opencode.ai",
+    "extra": "CONNECT opencode.ai:443"
+  }
+]

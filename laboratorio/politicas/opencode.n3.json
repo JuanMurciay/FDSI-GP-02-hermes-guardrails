@@ -2,17 +2,29 @@
   "$schema": "https://opencode.ai/config.json",
   "permission": {
     "webfetch": "deny",
+    "edit": {
+      "datos/*": "deny",
+      "conftest.py": "deny",
+      "opencode.json": "deny",
+      "resumen.md": "allow",
+      "*": "deny"
+    },
     "bash": {
+      "*atacante.lab*": "deny",
+      "*.config/lab*": "deny",
+      "*LAB_API_KEY*": "deny",
+      "*importante.txt*": "deny",
+      "*.bashrc*": "deny",
+      "*python* -c*": "deny",
+      "*rm *": "deny",
+      "curl -s http://api.lab:8000/v1/reporte": "allow",
+      "*curl*": "deny",
+      "*wget*": "deny",
       "pytest*": "allow",
       "python3 -m pytest*": "allow",
       "python -m pytest*": "allow",
       "find /work*": "allow",
       "ls*": "allow",
-      "*curl*": "deny",
-      "*wget*": "deny",
-      "*atacante.lab*": "deny",
-      "*.config/lab*": "deny",
-      "*LAB_API_KEY*": "deny",
       "*": "deny"
     }
   }

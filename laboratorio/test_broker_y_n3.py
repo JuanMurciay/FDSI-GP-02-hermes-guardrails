@@ -103,15 +103,52 @@ class TestBrokerCredencialesYN3(unittest.TestCase):
         ctx.exception.close()
 
     def test_4_preparacion_workspace_n3_inyecta_politica_permisos(self):
-        """El nivel N3 incluye opencode.json con validacion de herramientas bash y webfetch."""
+        """El nivel N3 incluye opencode.json con validacion de herramientas bash, edit y webfetch."""
         with tempfile.TemporaryDirectory() as tmp:
             ws = orquestador.preparar_workspace(Path(tmp), "A1c", "RUN-TEST", nivel="N3")
             cfg_path = ws / "opencode.json"
             self.assertTrue(cfg_path.exists())
             cfg = json.loads(cfg_path.read_text(encoding="utf-8"))
             self.assertEqual(cfg["permission"]["webfetch"], "deny")
+            self.assertEqual(cfg["permission"]["edit"]["datos/*"], "deny")
+            self.assertEqual(cfg["permission"]["edit"]["resumen.md"], "allow")
             self.assertEqual(cfg["permission"]["bash"]["*curl*"], "deny")
             self.assertEqual(cfg["permission"]["bash"]["pytest*"], "allow")
+
+    def test_5_broker_bloquea_metodos_mutables_y_rutas_no_autorizadas(self):
+        """El broker solo inyecta credenciales en GET/HEAD bajo /v1/ y rechaza POST o rutas fuera de /v1/."""
+        opener = self._opener_con_proxy()
+        req_post = urllib.request.Request("http://api.lab:8000/v1/reporte", data=b"{}", method="POST")
+        with self.assertRaises(urllib.error.HTTPError) as ctx_post:
+            opener.open(req_post, timeout=5)
+        self.assertEqual(ctx_post.exception.code, 403)
+        ctx_post.exception.close()
+
+        req_ruta = urllib.request.Request("http://api.lab:8000/collect?id=leak")
+        with self.assertRaises(urllib.error.HTTPError) as ctx_ruta:
+            opener.open(req_ruta, timeout=5)
+        self.assertEqual(ctx_ruta.exception.code, 403)
+        ctx_ruta.exception.close()
+        self.assertEqual(len(srv_lab.HISTORIAL), 0)
+
+    def test_6_nivel_n4_defensa_en_profundidad_y_dashboard_telemetria(self):
+        """El nivel N4 prepara politica N3 y el servidor del dashboard agrega metricas de corridas."""
+        with tempfile.TemporaryDirectory() as tmp:
+            ws = orquestador.preparar_workspace(Path(tmp), "A1c", "RUN-N4", nivel="N4")
+            self.assertTrue((ws / "opencode.json").exists())
+            self.assertTrue((ws / "datos" / "importante.txt").exists())
+
+        sys.path.insert(0, str(ROOT))
+        import dashboard.server as dash_srv
+        overview = dash_srv.calcular_overview()
+        self.assertIn("kpis", overview)
+        self.assertEqual(len(overview["por_nivel"]), 5)
+        corridas = dash_srv.listar_corridas()
+        self.assertGreater(len(corridas), 0)
+        detalle = dash_srv.obtener_detalle_corrida(corridas[0]["run_id"])
+        self.assertIsNotNone(detalle)
+        self.assertIn("registro", detalle)
+        self.assertIn("llamadas", detalle)
 
 
 if __name__ == "__main__":

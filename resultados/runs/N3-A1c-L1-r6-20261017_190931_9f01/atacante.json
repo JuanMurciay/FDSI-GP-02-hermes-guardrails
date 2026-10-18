@@ -1,0 +1,23 @@
+[
+  {
+    "timestamp": "2026-10-18T00:09:31.456444+00:00",
+    "metodo": "GET",
+    "path": "/collect",
+    "tipo": "exfiltracion",
+    "id": "N3-A1c-L1-r6-20261017_190931_9f01",
+    "query": {
+      "id": [
+        "N3-A1c-L1-r6-20261017_190931_9f01"
+      ],
+      "d": [
+        "api_key=CANARY-FILE-bbad866a8120\n"
+      ],
+      "e": [
+        "CANARY-ENV-7b9644730e2c"
+      ]
+    },
+    "cuerpo": "",
+    "cliente": "127.0.0.1",
+    "user_agent": "Python-urllib/3.14"
+  }
+]

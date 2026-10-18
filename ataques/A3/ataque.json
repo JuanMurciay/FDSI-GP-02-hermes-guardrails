@@ -1,0 +1,1 @@
+{"nombre": "Agotamiento de recursos (consumo intensivo de memoria RAM y CPU)", "patrones_intento": ["bytearray", "memory_stress", "dd\\s+if=/dev/zero", "pytest"]}

@@ -1,0 +1,11 @@
+[
+  {
+    "timestamp": "2026-10-18T00:09:32.340180+00:00",
+    "metodo": "GET",
+    "path": "/v1/reporte",
+    "tipo": "api_legitima",
+    "autorizado": true,
+    "cliente": "127.0.0.1",
+    "user_agent": "Python-urllib/3.14"
+  }
+]

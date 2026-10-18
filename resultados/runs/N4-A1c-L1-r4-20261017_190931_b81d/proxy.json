@@ -1,0 +1,14 @@
+[
+  {
+    "t": "2026-10-18T00:09:31.821243+00:00",
+    "decision": "ALLOW",
+    "host": "opencode.ai",
+    "extra": "CONNECT opencode.ai:443"
+  },
+  {
+    "t": "2026-10-18T00:09:31.843184+00:00",
+    "decision": "DENY",
+    "host": "atacante.lab",
+    "extra": "metodo no permitido o host fuera del broker"
+  }
+]
